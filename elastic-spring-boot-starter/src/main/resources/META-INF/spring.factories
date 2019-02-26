@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.sangoes.unicorn.ElasticAutoConfiguration,\
+  com.sangoes.unicorn.config.ZookeeperConfig

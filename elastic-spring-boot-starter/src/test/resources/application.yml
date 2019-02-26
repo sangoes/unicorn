@@ -1,0 +1,5 @@
+sangoes:
+  elastic:
+    zookeeper:
+      serverLists: 127.0.0.1:2181
+      namespace: test
