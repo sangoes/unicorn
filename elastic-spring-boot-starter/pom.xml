@@ -2,36 +2,40 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>unicorn</artifactId>
-        <groupId>com.sangoes.unicorn</groupId>
-        <version>1.0</version>
-    </parent>
+    <!--<parent>-->
+    <!--<artifactId>unicorn</artifactId>-->
+    <!--<groupId>com.sangoes.unicorn</groupId>-->
+    <!--<version>1.0</version>-->
+    <!--</parent>-->
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>com.sangoes.unicorn</groupId>
     <artifactId>elastic-spring-boot-starter</artifactId>
     <packaging>jar</packaging>
+    <version>1.0</version>
 
     <description>定时elastic spring boot2.x starter</description>
     <url>https://github.com/sangoes/unicorn.git</url>
 
-    <developers>
-        <developer>
-            <name>jerrychir</name>
-            <email>jerrychir@163.com</email>
-        </developer>
-    </developers>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>2.1.0.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
-    <scm>
-        <connection>
-            scm:git@github.com:sangoes/unicorn.git
-        </connection>
-        <developerConnection>
-            scm:git@github.com:sangoes/unicorn.git
-        </developerConnection>
-        <url>https://github.com/sangoes/unicorn.git</url>
-    </scm>
+    <properties>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+        <elastic.version>2.1.5</elastic.version>
+    </properties>
 
     <dependencies>
         <!--autoconfigure-->
@@ -66,25 +70,135 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
                 <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <!--<configuration>-->
-                    <!--<aggregate>true</aggregate>-->
-                <!--</configuration>-->
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.20.1</version>
+                <configuration>
+                    <includes>
+                        <include>**/testcase/**/*.java</include>
+                    </includes>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
             </plugin>
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-javadoc-plugin</artifactId>-->
+                <!--<version>3.0.0</version>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>attach-javadocs</id>-->
+                        <!--<goals>-->
+                            <!--<goal>jar</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+                <!--<configuration>-->
+                    <!--<skip>false</skip>-->
+                    <!--<show>public</show>-->
+                    <!--<charset>${project.build.sourceEncoding}</charset>-->
+                    <!--<encoding>${project.build.sourceEncoding}</encoding>-->
+                    <!--<docencoding>${project.build.sourceEncoding}</docencoding>-->
+                    <!--<links>-->
+                        <!--<link>http://docs.oracle.com/javase/7/docs/api</link>-->
+                    <!--</links>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
+            <!--<plugin>-->
+                <!--<artifactId>maven-gpg-plugin</artifactId>-->
+                <!--<version>1.6</version>-->
+                <!--<configuration>-->
+                    <!--<skip>false</skip>-->
+                <!--</configuration>-->
+                <!--<executions>-->
+                    <!--<execution>-->
+                        <!--<id>sign-artifacts</id>-->
+                        <!--<phase>verify</phase>-->
+                        <!--<goals>-->
+                            <!--<goal>sign</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
+                <!--</executions>-->
+            <!--</plugin>-->
         </plugins>
     </build>
+
+    <repositories>
+        <repository>
+            <id>alfresco-maven-repo</id>
+            <url>https://maven.alfresco.com/nexus/content/groups/public/</url>
+        </repository>
+        <repository>
+            <id>java-net</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>terracotta-releases</id>
+            <url>http://terracotta.org/download/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>jerrychir</name>
+            <email>jerrychir@163.com</email>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>
+            scm:git@github.com:sangoes/unicorn.git
+        </connection>
+        <developerConnection>
+            scm:git@github.com:sangoes/unicorn.git
+        </developerConnection>
+        <url>https://github.com/sangoes/unicorn.git</url>
+    </scm>
+
     <distributionManagement>
         <repository>
             <id>sonatype-oss</id>
@@ -97,59 +211,4 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
-    <profiles>
-        <profile>
-            <id>release</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>jar-no-fork</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-            <distributionManagement>
-                <snapshotRepository>
-                    <id>oss</id>
-                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-                </snapshotRepository>
-                <repository>
-                    <id>oss</id>
-                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-                </repository>
-            </distributionManagement>
-        </profile>
-    </profiles>
 </project>
